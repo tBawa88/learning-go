@@ -13,11 +13,12 @@ func (d deck) print() {
 	}
 }
 
-// Changes my by receiver that receives by value do not reflect on the original variable
-func (d deck) addCard(card string) {
-	d = append(d, card)
-}
+// // Changes my by receiver that receives by value do not reflect on the original variable
+// func (d deck) addCard(card string) {
+// 	d = append(d, card)
+// }
 
+// This is called pointer receiver. Any object that calls this method will have it's address passed to this and stored inside the variable d
 func (d *deck) addNewCard(card string) {
 	*d = append(*d, card)
 }

@@ -11,7 +11,6 @@ func main() {
 	cards = append(cards, "8 of Clubs")
 
 	cards.print()
-	cards.addCard(newCard())
 	cards.addNewCard(newCard())
 	fmt.Println("Added a new card----")
 	cards.print()
