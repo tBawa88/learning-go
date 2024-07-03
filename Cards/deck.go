@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
 	"strings"
+	"time"
 )
 
 type deck []string
@@ -20,29 +22,36 @@ func (d deck) print() {
 }
 
 // Returns a new deck, which contains all 52 cards
-func newDeck() deck {
-	var freshDeck deck
+func newDeck() (cards deck) {
 	for _, suit := range cardSuits {
 		for _, value := range cardValues {
 			card := value + " of " + suit
-			freshDeck = append(freshDeck, card)
+			cards = append(cards, card)
 		}
 	}
-	return freshDeck
+	return
 }
 
-// Returns 2 decks, a hand and new deck (deck, deck)
-func (d deck) deal(handSize int) (deck, deck) {
-	//We're taking out cards from the existing deck and creating a hand. Therfore those cards must be removed from the exisiting deck
-	newHand := d[:handSize]
-	newDeck := d[handSize:]
+// Shuffles the deck by swapping each element with another element of random index
+func (d deck) shuffle() {
+	sec := time.Now().UnixNano()
+	source := rand.NewSource(sec)
+	r := rand.New(source)
 
-	return newHand, newDeck
+	for i := 0; i < len(d); i++ {
+		r := r.Intn(len(d))
+		d[i], d[r] = d[r], d[i]
+	}
+}
+
+// Creates 2 "new" slices from  1 slice and returns them
+func (d deck) deal(handSize int) (deck, deck) {
+	return d[:handSize], d[handSize:]
 }
 
 // Takes a deck and saves to a file on HDD
 func (d deck) saveToFile(filename string) error {
-	b := []byte(d.ToString())
+	b := []byte(d.toString())
 	err := os.WriteFile(filename, b, 0666)
 	return err
 }
@@ -51,33 +60,33 @@ func (d deck) saveToFile(filename string) error {
 func newDeckFromFile(filename string) deck {
 	data, err := os.ReadFile(filename)
 	if err != nil {
-		//Option 1 - log the error, and return a brand newDeck() so as to satisfy the return type
-		//Option 2 - Log the error, and exit the program entirely and prevent any further execution
-		// fmt.Println("Error : ", err)
-		// os.Exit(1) //either use this or use log.Fatal(err) -> it logs the error and automatically calls os.Exit()
-		log.Fatal("Error :", err)
+		log.Fatal("Error :", err) //automatically calls os.Exit(1)
 	}
-
-	//data ([] byte) gets converted into string, then that string is getting split into a [] string
-	//We can directly return a []string because deck is extending [] string so compiler can easily convert it into deck
 	return strings.Split(string(data), ",")
-
 }
 
-// Constructs a single string from a deck ([] string), uses the named return to implicitly return the string
-func (d deck) toString() (s string) {
-	cardSlice := []string(d) //convert the deck into a string slice
-	for i, value := range cardSlice {
-		val := value + "," //add comma after each value so that when we deconstruct this string we can easily obtain the original slice
-		if i == len(d)-1 { //if it's the last value, don't add the comma
-			val = value
-		}
-		s += val
+// Converts []string to string using strings.Join() package method
+func (d deck) toString() string {
+	return strings.Join([]string(d), ",")
+}
+
+// Just a dummy function created to write an Example test function
+func perm(n int) (temp []int) {
+	for i := 0; i < n; i++ {
+		temp = append(temp, i)
 	}
 	return
 }
 
-// Same funciton, but uses the inbuilt strings.Join() function from "strings"
-func (d deck) ToString() string {
-	return strings.Join([]string(d), ",")
-}
+// Constructs a single string from a deck ([] string), uses the named return to implicitly return the string
+// func (d deck) toString() (s string) {
+// 	cardSlice := []string(d)
+// 	for i, value := range cardSlice {
+// 		val := value + ","
+// 		if i == len(d)-1 {
+// 			val = value
+// 		}
+// 		s += val
+// 	}
+// 	return
+// }
