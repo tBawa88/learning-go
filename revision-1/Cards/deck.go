@@ -33,9 +33,9 @@ func (d deck) print() {
 	}
 }
 
-func (d deck) saveToFile() {
+func (d deck) saveToFile(filename string) {
 	b := []byte(d.toString())
-	os.WriteFile("./deckInfo", b, 0666)
+	os.WriteFile(filename, b, 0666)
 }
 
 func readFromFile(filename string) (hand deck) {
