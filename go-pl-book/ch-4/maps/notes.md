@@ -2,6 +2,7 @@
 - representation of a hash table in go
 - `var ages map[string]int` declared using `map[K]V`
 - K is some comparable type which can be compared using == operator (string, int) avoid float because float comaprison is scuffed
+- A struct can also be used as a Key, since they're also comparable types 
 - Reason being the map needs to test if the given key is equal to the existing key or not
 - V has to type restriction
 

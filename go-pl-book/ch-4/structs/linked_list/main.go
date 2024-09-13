@@ -13,4 +13,5 @@ type LinkedList struct {
 	length     int
 }
 
+// Using receiver functions we can create proper data structures with their own operations
 func (l *LinkedList) append(value int) {}
