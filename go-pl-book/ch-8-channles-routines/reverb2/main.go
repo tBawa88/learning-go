@@ -35,7 +35,7 @@ func main() {
 			fmt.Println("Connection error ", err)
 			continue
 		}
-
+		fmt.Println("Client connected")
 		go handleConn(conn)
 	}
 }
