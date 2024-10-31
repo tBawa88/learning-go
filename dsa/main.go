@@ -3,9 +3,10 @@ package main
 import (
 	"fmt"
 	binarysearchtree "tbawa/dsa_go/binary_search_tree"
+	prioqueue "tbawa/dsa_go/priority_queue"
 )
 
-func main() {
+func main2() {
 	root := binarysearchtree.New_Treenode(10)
 	tree := binarysearchtree.BS_Tree{Root: root}
 
@@ -27,4 +28,16 @@ func main() {
 	tree.Remove(99)
 	fmt.Println("===== value removed ======")
 	tree.PrintSideways()
+}
+
+func main() {
+	queue := prioqueue.Queue{}
+	queue.Enqueue("Go to gym", 3)
+	queue.Enqueue("Enroll into BCA degree", 1)
+	queue.Enqueue("Get good at maths", 2)
+	queue.Enqueue("Get good at core CS concepts", 2)
+	queue.Enqueue("Regrow your hair", 4)
+
+	queue.Print()
+
 }
