@@ -3,7 +3,9 @@ package binarysearchtree
 import "fmt"
 
 func bst_search(node *Treenode, val int) bool {
-	if node.Data == val {
+	if node == nil {
+		return false
+	} else if node.Data == val {
 		return true
 	} else if val < node.Data {
 		return bst_search(node.Left, val)
@@ -30,8 +32,9 @@ func insert_node(node *Treenode, val int) {
 	}
 }
 
+// using double pointer to directly update the value of a node (since we don't have references in Go)
 func remove_node(node **Treenode, val int) error {
-	if node == nil {
+	if *(node) == nil {
 		return fmt.Errorf("Tree empty OR Node not found")
 	} else if val < (*node).Data {
 		return remove_node(&(*node).Left, val)
@@ -62,5 +65,35 @@ func findMin(node *Treenode) int {
 		return node.Data
 	} else {
 		return findMin(node.Left)
+	}
+}
+
+func printSideways(node *Treenode, indent string) {
+	if node != nil {
+		printSideways(node.Right, indent+"   ")
+		fmt.Println(indent, node.Data)
+		printSideways(node.Left, indent+"   ")
+	}
+}
+
+func printInorder(node *Treenode) {
+	if node != nil {
+		printInorder(node.Left)
+		fmt.Printf("%d, ", node.Data)
+		printInorder(node.Right)
+	}
+}
+func printPre(node *Treenode) {
+	if node != nil {
+		fmt.Printf("%d, ", node.Data)
+		printInorder(node.Left)
+		printInorder(node.Right)
+	}
+}
+func printPost(node *Treenode) {
+	if node != nil {
+		printInorder(node.Left)
+		printInorder(node.Right)
+		fmt.Printf("%d, ", node.Data)
 	}
 }
